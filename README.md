@@ -69,3 +69,10 @@ git push
 Parking rules live in `app/src/real.json`. Never invent rules: anything not
 confirmed by the named source stays out, and the place stays in
 "Needs checking". Update the `checked` date when you re-verify a place.
+
+Record positions come from the official city/Stadtwerke open-data dataset
+"ÖPNV - Park-and-Ride-Stationen" (Datenlizenz Deutschland Namensnennung 2.0):
+https://opendata.stadt-muenster.de/dataset/%C3%B6pnv-park-and-ride-stationen
+Maximum stay and transit-use requirements are not stated in the sources
+checked so far (Stadtwerke P+R page, city parking pages, this dataset), so
+records keep those rules marked as unverified.
