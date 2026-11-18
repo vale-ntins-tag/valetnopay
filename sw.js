@@ -1,5 +1,5 @@
-// ValetNoPay service worker. bundle.py replaces ff6ad080ab87 with a hash of the
-// published index.html on every build, so each release gets a fresh cache.
+// ValetNoPay service worker. bundle.py stamps the VERSION below with a hash
+// of the published index.html on every build, so each release gets a fresh cache.
 // Navigations are network-first: updates arrive normally online, and the
 // cached app shell is only a fallback when the network fails. Visitor data
 // lives in localStorage, which service worker updates never touch.
