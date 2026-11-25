@@ -31,7 +31,24 @@ export function GermanyOverview(){
    <FileButton variant="ghost" selected={sel==='hamburg'} onClick={()=>pick('hamburg')}>Hamburg: partly researched</FileButton>
   </div>
   {sel==='muenster'&&<Callout title="Münster: partly researched">13 official park-and-ride lots are listed. Their maximum stay and public-transport rules are not verified yet. <FileButton onClick={goMuenster}>Show the Münster map</FileButton></Callout>}
-  {sel==='hamburg'&&<Callout title="Hamburg: partly researched">Free parking: one street only, <strong>Reye</strong> (22397 Hamburg-Wandsbek). The 34 operator-listed Hamburg park-and-ride lots are also in the list as paid, not free (Parking results, City: Hamburg). Reye: reported by the app owner on 25 November 2026: the whole street can be parked on with no time limit. User-reported, not officially verified, and not yet checked against signs. <TextLink href={gmaps(53.7014021,10.1199507)}>Google Maps</TextLink> · <TextLink href={amaps(53.7014021,10.1199507)}>Apple Maps</TextLink> · <TextLink href="https://hamburg.staedte-info.net/reye_266553.php">Street listing</TextLink></Callout>}
+  {sel==='hamburg'&&<Callout title="Hamburg: partly researched">No officially verified free parking yet. One user-reported tip: <strong>Reye</strong> (22397 Hamburg-Wandsbek). Reported by the app owner on 25 November 2026: the whole street can be parked on with no time limit. Not officially verified and not yet checked against signs, so it is only a tip. Hamburg park-and-ride lots are paid and hidden by default (Parking results, City: Hamburg). <TextLink href={gmaps(53.7014021,10.1199507)}>Google Maps</TextLink> · <TextLink href={amaps(53.7014021,10.1199507)}>Apple Maps</TextLink> · <TextLink href="https://hamburg.staedte-info.net/reye_266553.php">Street listing</TextLink></Callout>}
   <Caption>Germany outline: Natural Earth (public domain). Münster and Hamburg boundaries: © OpenStreetMap contributors (ODbL). Hamburg lot positions: Freie und Hansestadt Hamburg, Behörde für Wirtschaft, Verkehr und Innovation, <TextLink href="https://www.govdata.de/dl-de/by-2-0">Datenlizenz Deutschland Namensnennung 2.0</TextLink>. Outlines are simplified. The street position is the street's centre, not its full length.</Caption>
  </Group>;
+}
+
+const C0=Math.cos(51.2*Math.PI/180);
+const proj=(lon:number,lat:number)=>[(lon-5.8)*C0*100,(55.1-lat)*100];
+type HPin={id:string;name:string;lat:number;lon:number;kind?:string};
+export function HamburgPins({pins,selected,onPick}:{pins:HPin[];selected:string;onPick:(id:string)=>void}){
+ return <div className="hhview" role="group" aria-label="Hamburg pin view">
+  <p>Hamburg pin view. Simplified city outline, no streets. Positions are for orientation only, not parking permission.</p>
+  <svg viewBox="242 132 46 42" role="img" aria-label="Simplified outline of Hamburg with spot pins" style={{width:'100%',maxWidth:420,display:'block',margin:'0 auto',background:'#fffdfb'}}>
+   <path d={ov.hamburg} fill="rgba(124,58,237,0.12)" stroke={PARTLINE} strokeWidth="0.35" strokeLinejoin="round"/>
+   {[...pins].sort((a,b)=>(a.kind==='reported'?1:0)-(b.kind==='reported'?1:0)).map(p=>{const [x,y]=proj(p.lon,p.lat);const rep=p.kind==='reported';return <g key={p.id} role="button" tabIndex={0} aria-label={p.name+(rep?', user-reported, not verified':', paid, not free')} onClick={()=>onPick(p.id)} onKeyDown={e=>{if(e.key==='Enter'||e.key===' ')onPick(p.id);}} style={{cursor:'pointer'}}>
+    <circle cx={x} cy={y} r={rep?1.6:1.1} fill={rep?'#fff':'#9ca3af'} stroke={rep?PARTLINE:'#4b5563'} strokeWidth={selected===p.id?0.7:0.35}/>
+    {rep&&<text x={x} y={y+0.6} fontSize="1.8" textAnchor="middle" fill={PARTLINE} fontFamily="system-ui,sans-serif">R</text>}
+   </g>;})}
+  </svg>
+  <Caption>R: Reye, user-reported, not verified. Grey: paid park-and-ride (not free), only when you turn them on below. Tap a pin for details.</Caption>
+ </div>;
 }
