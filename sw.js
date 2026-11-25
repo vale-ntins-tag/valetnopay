@@ -3,7 +3,7 @@
 // Navigations are network-first: updates arrive normally online, and the
 // cached app shell is only a fallback when the network fails. Visitor data
 // lives in localStorage, which service worker updates never touch.
-const VERSION = '3b5a595d4722';
+const VERSION = '676cebcb38fe';
 const CACHE = 'valetnopay-' + VERSION;
 const SHELL = './index.html';
 
