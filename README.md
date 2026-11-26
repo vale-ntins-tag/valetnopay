@@ -30,10 +30,9 @@ python3 bundle.py      # produces app/publish/index.html and app/publish/sw.js
 Test before publishing (needs a Chrome/Chromium binary):
 
 ```sh
-node check.cjs         # core behaviour at 320/390/1280 px, local build
-node check-map.cjs     # map width, wheel zoom and reset, local build
-node check-pinch.cjs   # two-finger pinch zoom, local build
-node check-offline.cjs # offline reload and saved data, local build
+node check-v3.cjs      # regression test of the current app (local publish/ build, or URL=...)
+# check.cjs, check-map.cjs, check-pinch.cjs, check-offline.cjs and the check-live-*
+# scripts belong to the pre-26-Nov Münster app and are obsolete.
 ```
 
 Publish:

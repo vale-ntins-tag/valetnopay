@@ -3,7 +3,7 @@
 // Navigations are network-first: updates arrive normally online, and the
 // cached app shell is only a fallback when the network fails. Visitor data
 // lives in localStorage, which service worker updates never touch.
-const VERSION = 'a5826805f097';
+const VERSION = 'b87884c7da8d';
 const CACHE = 'valetnopay-' + VERSION;
 const SHELL = './index.html';
 
@@ -38,6 +38,11 @@ self.addEventListener('fetch', (event) => {
         })
         .catch(() => caches.match(SHELL).then((hit) => hit || Response.error()))
     );
+    return;
+  }
+  // Data file: network first, cached copy when offline.
+  if (url.pathname.endsWith('/spots-de.json')) {
+    event.respondWith(fetch(req).then((res) => { if (res.ok) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(req, copy)); } return res; }).catch(() => caches.match(req).then((hit) => hit || Response.error())));
     return;
   }
   event.respondWith(caches.match(req).then((hit) => hit || fetch(req)));
